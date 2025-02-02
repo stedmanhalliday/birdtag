@@ -1,7 +1,7 @@
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         id: "addLabel",
-        title: "Add/Edit Label",
+        title: "Add label",
         contexts: ["selection"]
     });
 });
