@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Birdtag",
-    "version": "1.0",
+    "version": "0.1.0",
     "description": "Add persistent custom labels next to display names on X (Twitter).",
     "permissions": [
         "activeTab",
