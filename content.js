@@ -1,14 +1,9 @@
 function addLabelsToUsernames() {
-    console.log("Running addLabelsToUsernames");
-
     chrome.storage.local.get(null, (labels) => {
         document.querySelectorAll('div[data-testid="User-Name"] a[role="link"]').forEach((nameElement) => {
-            // const username = nameElement.childNodes[0].nodeValue.trim(); 
             const username = nameElement.innerText.trim();
 
             if (labels[username] && !nameElement.dataset.labeled) {
-                console.log(`Adding label for ${username}`);
-
                 let labelTag = document.createElement("span");
                 labelTag.innerText = ` ${labels[username]}`;
                 labelTag.style.backgroundColor = "#1d9bf0";
@@ -34,7 +29,7 @@ function addLabelsToUsernames() {
                         });
                     }
                 };
-                
+
                 let wrapper = document.createElement('div');
                 wrapper.appendChild(labelTag);
                 nameElement.closest('div[data-testid="User-Name"]').parentElement.prepend(wrapper);
@@ -44,13 +39,11 @@ function addLabelsToUsernames() {
     });
 }
 
-// Ensure mutation observer works
 const observer = new MutationObserver(() => {
-    console.log("Mutation detected, updating labels");
     addLabelsToUsernames();
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
 
-// Run the function once on load
+// Run once on load
 addLabelsToUsernames();

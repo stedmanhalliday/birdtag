@@ -16,10 +16,13 @@ Birdtag is a Chrome extension that allows users to add persistent custom labels 
 ### Adding labels
 
 - Right click a username in a post
-- Choose *Add label* in the context menu
+- Choose *Edit label* in the context menu
 - Enter your desired label in the dialog
 
-### Editing and removing labels
+### Editing labels
+- Repeat the steps above to edit a label
+- Alternatively, click an existing label to edit it
 
-- Click an existing label to edit it
+### Removing labels
+- Open the *Edit label* dialog using the steps above
 - Save a label with an empty field to remove it

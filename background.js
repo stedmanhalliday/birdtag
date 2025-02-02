@@ -1,7 +1,7 @@
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         id: "addLabel",
-        title: "Add label",
+        title: "Edit label",
         contexts: ["selection"]
     });
 });
@@ -20,8 +20,18 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 function openLabelDialog(selectedText) {
-    const label = prompt(`Enter label for "${selectedText}"`, "");
-    if (label && label.length <= 21) {
-        chrome.storage.local.set({ [selectedText]: label });
-    }
+    chrome.storage.local.get(selectedText, (data) => {
+        const existingLabel = data[selectedText] || "";
+        const newLabel = prompt(`Edit label for "${selectedText}"`, existingLabel);
+
+        if (newLabel === null) return; // User canceled
+
+        if (newLabel.trim() === "") {
+            // If input is empty, remove the label
+            chrome.storage.local.remove(selectedText);
+        } else {
+            // Otherwise, update storage
+            chrome.storage.local.set({ [selectedText]: newLabel.trim() });
+        }
+    });
 }
