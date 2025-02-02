@@ -4,7 +4,7 @@ Birdtag is a Chrome extension that allows users to add persistent custom labels 
 
 ## Installation
 
-- Use the green *Code* button to *Download ZIP*
+- Use the green *Code* button at the top right to *Download ZIP*
 - Unarchive the .zip file
 - Navigate to [Chrome Extensions](chrome://extensions)
 - Activate Developer mode with the toggle at the top right
