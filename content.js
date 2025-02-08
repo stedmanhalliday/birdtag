@@ -47,7 +47,7 @@ function refreshLabels() {
             const username = usernameElement.innerText.trim();
 
             // Check if a label already exists
-            let existingTag = userNameDiv.querySelector(".birdtag-label");
+            let existingTag = userNameDiv.parentElement.querySelector(".birdtag-label");
 
             if (labels[username]) {
                 if (existingTag) {
@@ -56,6 +56,8 @@ function refreshLabels() {
                 } else {
                     let labelTag = document.createElement("span");
                     labelTag.innerText = ` ${labels[username]}`;
+                    labelTag.classList.add("birdtag-label");
+                    labelTag.style.display = "inline-block";
                     labelTag.style.backgroundColor = "#1d9bf0";
                     labelTag.style.color = "#fff";
                     labelTag.style.padding = "2px 8px";
@@ -65,7 +67,6 @@ function refreshLabels() {
                     labelTag.style.fontFamily = 'TwitterChirp, -apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
                     labelTag.style.fontWeight = "500";
                     labelTag.style.lineHeight = "15px";
-                    labelTag.style.display = "inline-block";
                     labelTag.style.cursor = "pointer";
 
                     labelTag.onclick = () => {
@@ -79,7 +80,7 @@ function refreshLabels() {
 
                     let wrapper = document.createElement('div');
                     wrapper.appendChild(labelTag);
-                    userNameDiv.prepend(wrapper); // Prevents inserting multiple labels
+                    userNameDiv.parentElement.prepend(wrapper); // Prevents inserting multiple labels
                 }
             } else if (existingTag) {
                 existingTag.remove();
