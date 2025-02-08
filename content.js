@@ -56,14 +56,15 @@ function refreshLabels() {
                 } else {
                     let labelTag = document.createElement("span");
                     labelTag.innerText = ` ${labels[username]}`;
-                    labelTag.classList.add("birdtag-label");
                     labelTag.style.backgroundColor = "#1d9bf0";
                     labelTag.style.color = "#fff";
                     labelTag.style.padding = "2px 8px";
-                    labelTag.style.marginLeft = "6px";
+                    labelTag.style.marginBottom = "4px";
                     labelTag.style.borderRadius = "2px";
                     labelTag.style.fontSize = "13px";
+                    labelTag.style.fontFamily = 'TwitterChirp, -apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
                     labelTag.style.fontWeight = "500";
+                    labelTag.style.lineHeight = "15px";
                     labelTag.style.display = "inline-block";
                     labelTag.style.cursor = "pointer";
 
