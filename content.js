@@ -1,59 +1,63 @@
-// Store the last right-clicked element
+// store context menu target
 document.addEventListener("contextmenu", (event) => {
-    window.lastRightClickedElement = event.target;
+    window.contextElement = event.target;
 });
 
-// Listen for background.js messages
+// listen for background.js messages
 chrome.runtime.onMessage.addListener((message) => {
     if (message.action === "openLabelDialog") {
-        const clickedElement = window.lastRightClickedElement;
+        const clickedElement = window.contextElement;
         if (!clickedElement) return;
 
-        // Find the correct div containing the username
+        // username container
         const userNameDiv = clickedElement.closest('div[data-testid="User-Name"]');
         if (!userNameDiv) return;
 
-        // Select the second <a role="link"> inside the username div
+        // username links
         const links = userNameDiv.querySelectorAll('a[role="link"]');
-        if (links.length < 2) return; // Ensure there are at least two links
+        if (links.length < 2) return;   // validate display name + username links present
 
-        const usernameElement = links[1]; // Grab the second link
+        const usernameElement = links[1];   // username link
         const username = usernameElement.innerText.trim();
 
-        // Open edit label prompt
+        // edit label dialog
         chrome.storage.local.get(username, (data) => {
             const existingLabel = data[username] || "";
             const newLabel = prompt(`Edit label for "${username}"`, existingLabel);
 
-            if (newLabel === null) return; // User canceled
+            // canceled dialog
+            if (newLabel === null) return;
 
             if (newLabel.trim() === "") {
+                // remove empty label
                 chrome.storage.local.remove(username, refreshLabels);
             } else {
+                // set new label
                 chrome.storage.local.set({ [username]: newLabel.trim() }, refreshLabels);
             }
         });
     }
 });
 
-// Refresh labels in the DOM
+// refresh label tags in DOM
 function refreshLabels() {
     chrome.storage.local.get(null, (labels) => {
         document.querySelectorAll('div[data-testid="User-Name"]').forEach((userNameDiv) => {
             const links = userNameDiv.querySelectorAll('a[role="link"]');
-            if (links.length < 2) return; // Ensure second <a> exists
+            if (links.length < 2) return;   // validate display name + username links present
 
-            const usernameElement = links[1];
+            const usernameElement = links[1];   // username link
             const username = usernameElement.innerText.trim();
 
-            // Check if a label already exists
+            // tag exists check
             let existingTag = userNameDiv.parentElement.querySelector(".birdtag-label");
 
             if (labels[username]) {
                 if (existingTag) {
-                    // Update existing label instead of adding a new one
+                    // update existing tag
                     existingTag.innerText = ` ${labels[username]}`;
                 } else {
+                    // create new tag
                     let labelTag = document.createElement("span");
                     labelTag.innerText = ` ${labels[username]}`;
                     labelTag.classList.add("birdtag-label");
@@ -69,6 +73,7 @@ function refreshLabels() {
                     labelTag.style.lineHeight = "15px";
                     labelTag.style.cursor = "pointer";
 
+                    // edit label dialog
                     labelTag.onclick = () => {
                         const newLabel = prompt(`Edit label for "${username}"`, labels[username]);
                         if (newLabel === "") {
@@ -78,23 +83,25 @@ function refreshLabels() {
                         }
                     };
 
+                    // insert tag into DOM
                     let wrapper = document.createElement('div');
                     wrapper.appendChild(labelTag);
-                    userNameDiv.parentElement.prepend(wrapper); // Prevents inserting multiple labels
+                    userNameDiv.parentElement.prepend(wrapper);
                 }
             } else if (existingTag) {
+                // remove existing tag
                 existingTag.remove();
             }
         });
     });
 }
 
-// Observe new tweets dynamically
+// observe new posts dynamically
 const observer = new MutationObserver(() => {
     refreshLabels();
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
 
-// Run label injection on load
+// inject labels onload
 refreshLabels();
