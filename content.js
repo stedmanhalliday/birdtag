@@ -1,3 +1,5 @@
+let isActive = document.visibilityState === "visible";
+
 // store context menu target
 document.addEventListener("contextmenu", (event) => {
     window.contextElement = event.target;
@@ -96,12 +98,31 @@ function refreshLabels() {
     });
 }
 
-// observe new posts dynamically
+// mutation observer to watch for DOM updates
 const observer = new MutationObserver(() => {
-    refreshLabels();
+    if (isActive) {
+        refreshLabels();
+    }
 });
 
-observer.observe(document.body, { childList: true, subtree: true });
+function startObserver() {
+    observer.observe(document.body, { childList: true, subtree: true });
+}
 
-// inject labels onload
-refreshLabels();
+function stopObserver() {
+    observer.disconnect();
+}
+
+refreshLabels();    // inject labels on load
+startObserver();    // watch for DOM updates
+
+// detect tab focus
+document.addEventListener("visibilitychange", () => {
+    isActive = document.visibilityState === "visible";
+    if (isActive) {
+        refreshLabels();
+        startObserver(); // resume watching for DOM changes
+    } else {
+        stopObserver(); // stop observing unfocused tab
+    }
+});
