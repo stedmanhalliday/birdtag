@@ -17,8 +17,12 @@ Download now and start tagging! 🪽
 
 ## Installation
 
+### Install from the Chrome Web Store
+- Install the [official extension from the Chrome Web Store](https://chromewebstore.google.com/detail/birdtag/ibpikkmaiihccfofhefekeomkplfgfpm)
+
+### Install the unpacked extension manually
 - Download a .zip file
-  - [Birdtag 1.0.0 release](https://github.com/stedmanhalliday/birdtag/releases/download/v1.0.0/birdtag-main.zip)
+  - [Birdtag 1.0.2 release](https://github.com/stedmanhalliday/birdtag/releases/download/v1.0.2/birdtag.zip)
   - [Latest source](https://github.com/stedmanhalliday/birdtag/archive/refs/heads/main.zip)
 - Unarchive the .zip file
 - Navigate to [Chrome Extensions](chrome://extensions)
